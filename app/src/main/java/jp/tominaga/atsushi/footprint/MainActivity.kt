@@ -1,5 +1,6 @@
 package jp.tominaga.atsushi.footprint
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,12 @@ class MainActivity : AppCompatActivity() {
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
             R.id.action_camera -> {
+
+                val intent = Intent(this@MainActivity,EditActivity::class.java).apply{
+                    putExtra(IntentKey.EDIT_MODE.name, ModeInEdit.SHOOT.name)
+                }
+
+                startActivity(intent)
 
             }
             else -> super.onOptionsItemSelected(item)
