@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             R.id.action_camera -> {
 
                 val intent = Intent(this@MainActivity,EditActivity::class.java).apply{
-                    putExtra(IntentKey.EDIT_MODE.name, ModeInEdit.SHOOT.name)
+                    putExtra(IntentKey.EDIT_MODE.name, ModeInEdit.SHOOT)
                 }
 
                 startActivity(intent)

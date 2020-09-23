@@ -13,6 +13,7 @@ buildscript {
         classpath "io.realm:realm-gradle-plugin:6.0.2"
         classpath 'com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0'
 
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
