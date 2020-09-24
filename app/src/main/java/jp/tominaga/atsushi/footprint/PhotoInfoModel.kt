@@ -17,7 +17,7 @@ open class PhotoInfoModel :RealmObject() {
     var longitude : Double = 0.0
 
     //地点(緯度の文字列＋経度の文字列) =>地図にマーキングする場所を特定させるため
-    var locaton: String = ""
+    var location: String = ""
     //コメント
     var comment : String = ""
 }

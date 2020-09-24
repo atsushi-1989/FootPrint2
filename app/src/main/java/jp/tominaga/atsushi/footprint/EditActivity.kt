@@ -23,6 +23,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.davemorrissey.labs.subscaleview.ImageSource
 import com.google.android.gms.location.LocationServices
+import io.realm.Realm
+import io.realm.kotlin.createObject
 
 import kotlinx.android.synthetic.main.activity_edit.*
 import kotlinx.android.synthetic.main.content_edit.*
@@ -70,6 +72,57 @@ class EditActivity : AppCompatActivity() {
             //ModeInEditがEditの場合
             //Todo 編集モードでやること
         }
+
+        btnGoMap.setOnClickListener {
+            if (mode == ModeInEdit.SHOOT && !isGetLocation){
+                Toast.makeText(this@EditActivity, getString(R.string.location_not_set),Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            displayMap(selectedPhotoInfo.latitude, selectedPhotoInfo.longitude)
+        }
+
+        btnDone.setOnClickListener {
+            writePhotoInfoToRealm()
+        }
+
+    }
+
+    private fun writePhotoInfoToRealm() {
+
+        val realm = Realm.getDefaultInstance()      //Realmの今の情報をとってくる
+        realm.beginTransaction()
+        var photoInfoRecord = PhotoInfoModel()
+
+        when(mode){
+            ModeInEdit.SHOOT -> {
+                photoInfoRecord = realm.createObject(PhotoInfoModel::class.java)
+            }
+            ModeInEdit.EDIT -> {
+
+            }
+        }
+        photoInfoRecord.apply {
+            stringContentUrl = selectedPhotoInfo.stringContentUrl
+            dateTime = selectedPhotoInfo.dateTime
+            latitude = selectedPhotoInfo.latitude
+            longitude = selectedPhotoInfo.longitude
+            location = latitude.toString() + longitude.toString()
+            comment = inputComment.text.toString()
+        }
+        realm.commitTransaction()
+
+        inputComment.setText("")        //登録後はコメント削除
+        Toast.makeText(this@EditActivity,getString(R.string.photo_info_written),Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
+    private fun displayMap(latitude: Double, longitude: Double) {
+
+        val geoString = "geo:" + latitude + "," + longitude + "?z=" + ZOOM_LEVEL_DETAIL
+        val gmmIntentUri = Uri.parse(geoString)
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        startActivity(mapIntent)
 
     }
 
